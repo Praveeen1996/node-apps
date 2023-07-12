@@ -38,7 +38,11 @@ pipeline {
                 sh "docker push praveenhema/nodeapps:${DOCKER_TAG} "
             }
         }
-        
+        stage('Docker Deploy'){
+            steps{
+              ansiblePlaybook credentialsId: 'dev-server', disableHostKeyChecking: true, extras: "-e DOCKER_TAG=${DOCKER_TAG}", installation: 'ansible', inventory: 'dev.inv', playbook: 'deploy-docker.yml'
+            }
+        }
     }
 }
 def getVersion(){
